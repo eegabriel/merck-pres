@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Erin E Gabriel  Michael Daniels and  M Elizabeth Halloran" />
+  <meta name="dcterms.date" content="2014-06-17" />
+  <title>Comparing Biomarkers as Trial Level General  Surrogates</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="./css/reveal.min.css"/>
+
+  <!-- some tweaks to reveal css -->
+  <style type="text/css">
+    .reveal h1 { font-size: 2.0em; }
+    .reveal h2 { font-size: 1.5em;  }
+    .reveal h3 { font-size: 1.25em;	}
+    .reveal h4 { font-size: 1em;	}
+
+    .reveal .slides>section,
+    .reveal .slides>section>section {
+      padding: 0px 0px;
+    }
+
+
+
+    .reveal table {
+      border-width: 1px;
+      border-spacing: 2px;
+      border-style: dotted;
+      border-color: gray;
+      border-collapse: collapse;
+      font-size: 0.7em;
+    }
+
+    .reveal table th {
+      border-width: 1px;
+      padding-left: 10px;
+      padding-right: 25px;
+      font-weight: bold;
+      border-style: dotted;
+      border-color: gray;
+    }
+
+    .reveal table td {
+      border-width: 1px;
+      padding-left: 10px;
+      padding-right: 25px;
+      border-style: dotted;
+      border-color: gray;
+    }
+
+  </style>
+
+    <style type="text/css">code{white-space: pre;}</style>
+
+
+
+<link rel="stylesheet" href="./css/theme/sky.css" id="theme">
+
+
+<link rel="stylesheet" media="print" href="./css/print/pdf.css" />
+
+
+</head>
+<body>
+
+<head>
+<style type="text/css">
+.reveal .slides p {
+text-align: left;
+font-family: "Ubuntu", sans-serif;
+font-size: 35px;
+}
+.reveal .slides li {
+text-align: left;
+font-family: "Ubuntu", sans-serif;
+font-size: 35px;
+}
+.reveal h1 {
+text-align: center;
+font-family: "Ubuntu", sans-serif;
+font-size: 70px;
+}
+.reveal h2 {
+text-align: center;
+font-size: 50px;
+font-family: "Ubuntu", sans-serif;
+text-transform: none;
+letter-spacing: normal;
+}
+.references {
+max-height: 630px;
+overflow: auto;
+}
+.reveal blockquote {
+background: rgba(255, 166, 32, 0.33);
+}
+</style>
+</head>
+  <div class="reveal">
+    <div class="slides">
+
+<section>
+    <h1 class="title">Comparing Biomarkers as Trial Level General <br> Surrogates</h1>
+    <h2 class="author">Erin E Gabriel <br> Michael Daniels and <br> M Elizabeth Halloran</h2>
+    <h3 class="date">June 17, 2014</h3>
+</section>
+
+<section><section id="background" class="titleslide slide level1"><h1>Background</h1></section><section class="slide level6">
+
+<h2>
+Scientific Questions of Interest
+</h2>
+<p>RotaTeq has different efficacy in different regions: <br></p>
+<p>1.) Why does efficacy differ?<br /><br><br />2.) Can we accurately predict what the efficacy will actually be in a new setting?<br /><br> 3.) Do different biomarkers or combinations of biomarkers at the trial level make better surrogates of RotaTeq efficacy?<br /><br></p>
+<p>We are attempting to develop methods to help answer 2&amp;3.<br />This may give us insight into 1, but we cannot answer this question with our methods.</p>
+</section><section class="slide level6">
+
+<h2>
+Trial Level General Surrogates
+</h2>
+<blockquote>
+<p>If the trial level treatment effect on a biomarker can be used to accurately predict a trial level clinical treatment effect and this predictive association is generalizable to a setting, then the biomarker is a trial level general surrogate for that clinical outcome in that setting.</p>
+</blockquote>
+<ul>
+<li><p>Gives context, any setting in which accurate prediction is possible</p></li>
+<li><p>Defines that it is at the trial level</p></li>
+<li><p>Correlation between the (causal) treatment effects, biomarker need not be in the causal pathway</p></li>
+<li><p>General clinical trial setting (possible observational trial)</p></li>
+</ul>
+</section></section>
+<section><section id="models-and-estimation" class="titleslide slide level1"><h1>Models and Estimation</h1></section><section class="slide level6">
+
+<h2>
+Notation
+</h2>
+<p><span class="math">\(J\)</span> trials indexed by <span class="math">\(j=\{1 \dots J\}\)</span> same clinical endpoint of interest and same candidate GSs</p>
+<ul>
+<li><span class="math">\(Z_{ij} \in \{0,1\}\)</span> the treatment indicator for subject <span class="math">\(i\)</span> in trial <span class="math">\(j\)</span>, RotqTeq.</li>
+<li><span class="math">\(Y_{ij}\)</span> the clinical endpoint, severe diarrhea.</li>
+<li><span class="math">\({A}_{ij}\)</span> the candidate trial level GS, antibody level.</li>
+</ul>
+<p><br></p>
+<ul>
+<li><span class="math">\(T_{1j}\)</span> the true treatment effect of <span class="math">\(Z\)</span> on the candidate trial level GS.<br /></li>
+<li><span class="math">\(T_{2j}\)</span> the true treatment effect of <span class="math">\(Z\)</span> on the clinical outcome Y in trial <span class="math">\(j\)</span></li>
+</ul>
+</section><section class="slide level6">
+
+<h2>
+Relationship of Interest
+</h2>
+<p>The true treatment effect on the clinical outcome given the true treatment effect on the surrogate outcome.</p>
+<p><br> <br></p>
+<p><span class="math">\[T_{2j}|T_{1j}\]</span></p>
+<p><br></p>
+<ul>
+<li>We don’t observe either of these values only estimates of them</li>
+<li>These values may differ greatly over the set of trials</li>
+</ul>
+</section><section class="slide level6">
+
+<h2>
+Data collection
+</h2>
+
+<p>Data can be collected at the subject level over the <span class="math">\(J\)</span> trials<br /><br></p>
+<ul>
+<li><span class="math">\(\{Z_{ij}, Y_{ij}, {A}_{ij,k}\}\)</span> iid within trial<br /></li>
+<li>Independent between trials but not iid<br /><br></li>
+</ul>
+<p>Data can be collected at the trial level<br /><br></p>
+<ul>
+<li>estimates of <span class="math">\(T_{1j}\)</span> and <span class="math">\(T_{2j}\)</span><br /></li>
+<li>Published and unpublished results<br /></li>
+<li>Requires estimates of the standard errors for these estimates</li>
+</ul>
+</section><section class="slide level6">
+
+<h2>
+Within Trial models
+</h2>
+
+<p><br> <br></p>
+<p><span class="math">\[h_1(E[A_{ij}|Z_{ij}])=\zeta_{0j} + T_{1j} Z_{ij}\]</span></p>
+<p><span class="math">\[h_2(E[Y_{ij}|Z_{ij}])=\gamma_{0j} + T_{2j} Z_{ij}\]</span> <br><br /><br></p>
+<p>where <span class="math">\(\zeta_{0j}\)</span> and <span class="math">\(\gamma_{0j}\)</span> are the trial specific intercepts</p>
+<p>obtain <span class="math">\(\widehat{T}_{1j} \hspace{0.5cm}\hbox{and}\hspace{0.5cm} \widehat{T}_{2j}\)</span></p>
+</section><section class="slide level6">
+
+<p><img src="TLGS_Merck_061014_files/figure-revealjs/unnamed-chunk-2.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" style="display: block; margin: auto;" /></p>
+</section><section class="slide level6">
+
+<p><img src="TLGS_Merck_061014_files/figure-revealjs/unnamed-chunk-3.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" style="display: block; margin: auto;" /></p>
+</section><section class="slide level6">
+
+<p><img src="TLGS_Merck_061014_files/figure-revealjs/unnamed-chunk-4.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" style="display: block; margin: auto;" /></p>
+</section><section class="slide level6">
+
+<p><img src="TLGS_Merck_061014_files/figure-revealjs/unnamed-chunk-5.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" style="display: block; margin: auto;" /></p>
+</section><section class="slide level6">
+
+<p><img src="TLGS_Merck_061014_files/figure-revealjs/unnamed-chunk-6.png" title="plot of chunk unnamed-chunk-6" alt="plot of chunk unnamed-chunk-6" style="display: block; margin: auto;" /></p>
+</section><section class="slide level6">
+
+<h2>
+Within Trial Estimation
+</h2>
+<p>Using an estimating equation approach the joint distribution of the estimated treatment effects can be obtained, <span class="citation" data-cites="Dai12">Dai and Hughes (2012)</span>.<br /><br></p>
+<p>As given in <span class="citation" data-cites="Dai12">Dai and Hughes (2012)</span><br />if we obtain the asymptotically linear estimates of <span class="math">\(T_{1j}\)</span> and <span class="math">\(T_{2j}\)</span>, we can estimate the covariance of the estimated values within a trial <span class="math">\(j\)</span>. <br></p>
+<ul>
+<li>may restrict models that can be assumed for <span class="math">\(h_1\)</span> and <span class="math">\(h_2\)</span>. <br></li>
+<li>Full Bayesian Modeling is possible, unlikely to substantially improve evaluation at the trial level <span class="citation" data-cites="Korn05">Korn, Albert, and McShane (2005)</span></li>
+</ul>
+</section><section class="slide level6">
+
+<h2>
+Individual data are not available
+</h2>
+<p>Our method of candidate trial level GS evaluation and comparison can still be applied to trial level estimates,<br />provided that<br /><br></p>
+<ul>
+<li><span class="math">\(\widehat{T}_{1j}\)</span> <span class="math">\(\widehat{T}_{2j}\)</span> for the same <span class="math">\({A}\)</span> and <span class="math">\(Y\)</span><br /></li>
+<li>Estimation error <span class="math">\(\hat{\sigma}_{1j}, \hat{\sigma}_{2j}\)</span><br /><br></li>
+</ul>
+</section><section class="slide level6">
+
+<h2>
+Between Trial: Likelihood
+</h2>
+<p>If we observe or use the frequentist within trial estimation procedure to obtain, <span class="math">\(\widehat{T}_{1j}\)</span> and <span class="math">\(\widehat{T}_{2j}\)</span>. We assume that these estimates are consistent, such that<br /><span class="math">\[
+E[\widehat{T}_{1j}]\rightarrow T_{1j} 
+\]</span> <span class="math">\[
+E[\widehat{T}_{2j}]\rightarrow T_{2j}  
+\]</span> <br></p>
+<p>trial specific normal likelihoods for the observed estimated treatment effects given the true treatment effects<br /><span class="math">\[f_{1jk}(\widehat{T}_{1j}|T_{1j},\hat{\sigma}_{1j})\]</span><br /><span class="math">\[f_{2j}(\widehat{T}_{2j}|T_{2j}, \hat{\sigma}_{2j})\]</span></p>
+</section><section class="slide level6">
+
+<h2>
+Between Trial: Working Conditional Independence
+</h2>
+<p>we can assume that these estimates are conditionally independent allowing us to derive the joint likelihood within a given trial based on these assumed models, by:<br /><br></p>
+<p><span class="math">\[f_{j}(\widehat{T}_{1j},\widehat{T}_{2j}|\hat{\sigma}_{1j,k}, \hat{\sigma}_{2j},T_{2j},T_{1j})\]</span><br /><span class="math">\[=f_{1j}(\widehat{T}_{1j}|T_{1j},\hat{\sigma}_{1j}) \times f_{2j}(\widehat{T}_{2j}|T_{2j},\hat{\sigma}_{2j})\]</span><br /><br></p>
+<p>The joint likelihood over all the trials is given by <span class="math">\(f=\prod^{J}_{j=1}{f_{j}}\)</span></p>
+</section><section class="slide level6">
+
+<h2>
+Between Trial: Joint Likelihood
+</h2>
+<p>As outlined in <span class="citation" data-cites="Dai12">Dai and Hughes (2012)</span>, we do not have to assume conditional independence between the estimates for the trials with available data. We can instead estimate the asymptotic joint distribution of <span class="math">\((\widehat{T}_{1j}, \widehat{T}_{2j})\)</span>: <span class="math">\[
+f_{jk}(\widehat{T}_{1j},\widehat{T}_{1j}|\hat{\sigma}_{1j}, \hat{\sigma}_{2j},T_{2j},T_{1j})
+\sim\]</span><br /><span class="math">\[N \left\{
+\left(\begin{array}{c}
+ T_{1j}\\
+ T_{j2}
+      \end{array} \right)
+\left(\begin{array}{cc}
+\hat{\sigma}^{2}_{1j}&amp; \hat{\sigma}_{12j} \\
+ \hat{\sigma}_{12j}&amp;\hat{\sigma}^{2}_{2j}
+      \end{array} \right) \right\}
+\]</span></p>
+<p>This can be used as the likelihood, for any trial with the required individual data. <span class="math">\(f_k\)</span> may be the product of any set of the conditional working independence likelihoods and the joint likelihoods.</p>
+</section><section class="slide level6">
+
+<h2>
+Priors, <span class="math">\(T_{1j}\)</span>
+</h2>
+<p><br> We assume a Dirichlet process mixture (DPM) of Gaussians for the distribution of the true treatment effect on the candidate trial level GS, <span class="math">\(T_{1j}\)</span>, <br></p>
+<p><span class="math">\[
+T_{1j} \sim N(\mu_{1j},\tau_{1j})
+\]</span></p>
+<p><span class="math">\[
+(\mu_{1j},\tau_{1j}|G) \sim G \hspace{2cm} G \sim DP(\alpha, G_0)
+\]</span></p>
+<p><span class="math">\[
+DP(\alpha, G_0) = \sum_{m=1}^{M} \alpha_m q(\mu_{1m}|\theta)*f(\tau_{1m}|\zeta)
+\]</span></p>
+</section><section class="slide level6">
+
+<h2>
+Priors, <span class="math">\(T_{2j}\)</span>
+</h2>
+<p>Adaptive spline model <span class="math">\(q(t_{2j}|T_{1j},\beta,\nu)\)</span> <br></p>
+<p>Allows for a very flexible relationship between the true treatment effects</p>
+<ul>
+<li><span class="math">\(t_{2j}=m(T_{1j}, \beta) + \epsilon_j\)</span><br /></li>
+<li><span class="math">\(m(T_{1j}, \beta_k) = \beta_0 + \beta_1 T_{1j} + \beta_2 T_{1j}^{2}+\)</span><br /></li>
+<li><span class="math">\(\sum^{J}_{j=1}{b_j|T_{1j}-k_{j}|^{3}}\)</span></li>
+</ul>
+<p><span class="math">\(\epsilon_j\)</span> are i.i.d <span class="math">\(N(0,\sigma_{\epsilon})\)</span> and <span class="math">\(b_j \sim N(0, \kappa^{2}_{b})\)</span>.</p>
+</section><section class="slide level6">
+
+<h2>
+Joint Prior
+</h2>
+<p>The joint prior of <span class="math">\(T_{2j}\)</span>, <span class="math">\(T_{1j}\)</span> and <span class="math">\(\beta\)</span> and the rest of the parameters and hyper-parameters, which we will denote as <span class="math">\(\nu\)</span>, <span class="math">\(\nu=\{\tau^{2}_{1k},\tau^{2}_{2},\mu_{2},\mu_{1}, \kappa^{2}_{b} ,b_m \ldots\}\)</span>, is given by: <br> <br> <span class="math">\[\pi(T_{2j},T_{1j},\beta,\nu)=\]</span> <span class="math">\[g(T_{1j}|\mu_{1},\tau_{1})*q(t_{2j}|T_{1j},\beta,\nu)*\pi(\beta|\nu)*\pi(\nu).\]</span></p>
+</section><section class="slide level6">
+
+<h2>
+Full Posterior
+</h2>
+<p>We can then use the joint likelihood and the joint prior to define the joint posterior of interest by:</p>
+<p>We will denote this posterior by <span class="math">\(P_k(T_{2j},T_{1j},\beta_k, \nu| O_{J})\)</span> for compactness, where <span class="math">\(O_{J}\)</span> is all observed data in all <span class="math">\(J\)</span> trials.</p>
+</section><section class="slide level6">
+
+<h2>
+Estimation
+</h2>
+<p>Estimation can carried out by MCMC using a Gibbs sampling program. <br> <br></p>
+<p>Gibbs sampler allows for us to update the full conditional distribution for each parameter, holding the other parameters constant at their last update. <br> <br></p>
+<p>We use JAGS for our simulations, but Winbugs and R both have boxed samplers that can be used as well. *The R Gibbs did not seem to mix properly for this model…</p>
+</section></section>
+<section><section id="prediction" class="titleslide slide level1"><h1>Prediction</h1></section><section class="slide level6">
+
+<h2>
+Predictive Posterior
+</h2>
+<p>Although we do not observe <span class="math">\(\widehat{T}_{2J+1}\)</span> or <span class="math">\(\hat{\sigma}_{2J+1}\)</span>, the likelihood for this information is included in the model <br></p>
+<ul>
+<li>The missing data are treated like parameters<br /></li>
+<li>Prior defined by the <span class="math">\(f^{*}_{J+1}\)</span> using hyper-parameters,<span class="math">\(\tau^{2}_{1},T_{2J+1},\beta\)</span></li>
+<li>Observed data <span class="math">\(\widehat{T}_{1J+1}\)</span> and <span class="math">\(\hat{\sigma}_{1J+1}\)</span>. <br></li>
+</ul>
+<p>After running the Gibbs sampler for this model, we can sample directly from the marginal posterior of <span class="math">\(T_{2J+1}\)</span> given the data <span class="math">\(P(T_{2J+1}|O_{J},\widehat{T}_{1J+1}, \widehat{\sigma}_{1J+1})\)</span> which is the desired posterior distribution.</p>
+</section></section>
+<section><section id="evaluation-and-comparison-of-candidate-trial-level-gs" class="titleslide slide level1"><h1>Evaluation and Comparison of Candidate trial level GS</h1></section><section class="slide level6">
+
+<h2>
+Prediction Error
+</h2>
+<p>Given a new trial setting <br></p>
+<ul>
+<li>We are interested in estimating the error we might expect to make using our predictive model</li>
+<li>The absolute difference between the truth and the predicted value, <span class="math">\(D\)</span>
+<ul>
+<li>On the scale of the outcome</li>
+<li><span class="citation" data-cites="Tian07">Tian et al. (2007)</span> asymptotic properties for iid data</li>
+</ul></li>
+</ul>
+</section><section class="slide level6">
+
+<h2>
+Absolute prediction Error
+</h2> 
+
+<p><span class="citation" data-cites="Tian07">Tian et al. (2007)</span> absolute prediction error</p>
+<ul>
+<li>We don’t observe the truth even in the evaluation trials and differences</li>
+<li>We would not expect the differences to be iid <br></li>
+</ul>
+<p><span class="math">\[D_{J+1, k} = E|T_{2J+1}- E[T_{2J+1}|\widehat{T}_{1J+1}, \widehat{\sigma}_{1J+1}]|\]</span></p>
+</section><section class="slide level6">
+
+<h2>
+Estimation <span class="math">\(D_{J+1,k}\)</span>
+</h2>
+<p><br> To estimate <span class="math">\(D_{J+1, k}\)</span>, we first obtain <span class="math">\(D_{j,k}\)</span> for a given observed trial <span class="math">\(j\)</span>. <br></p>
+<ul>
+<li>In we obtain estimates for <span class="math">\(D_{j,k}\)</span> for all <span class="math">\(J\)</span> trial we can estimate <span class="math">\(D_{J+1,k}\)</span><br /></li>
+<li>Each trial will provide evidence of the predictive ability of the trial level GS in a new setting</li>
+<li>The average error made in the <span class="math">\(J\)</span> predictions over the trials gives us our best estimate of the error we are likely to make in a new trial setting outside the evaluation sets</li>
+</ul>
+</section><section class="slide level6">
+
+<h2>
+Estimation <span class="math">\(D_{j,k}\)</span>: <span class="math">\(T_{2j}\)</span>
+</h2>
+
+<p><br> <span class="math">\[D_{J+1, k} = E|T_{2J+1}- E[T_{2J+1}|\widehat{T}_{1J+1}, \widehat{\sigma}_{1J+1}]|\]</span> <br></p>
+<p>The marginal posterior distribution of <span class="math">\(T_{2j}\)</span> can be calculated using all observed estimates related to the clinical outcome, ie. <span class="math">\(\{\widehat{T}_{2j}, \widehat{\sigma}_{2j}\}\)</span>, over all the evaluation trials alone; we will denote this as <span class="math">\(O_{2J}\)</span>. <br></p>
+<p><span class="math">\[T_{2j}|O_{2J}\]</span> <br></p>
+</section><section class="slide level6">
+
+<h2> 
+Estimation <span class="math">\(D_{j,k}\)</span>: <span class="math">\(E[T_{2j}|O_{J},\widehat{T}_{ij}, \widehat{\sigma}_{ij}]\)</span>
+</h2>
+<p><br> <span class="math">\[D_{J+1, k} = E|T_{2J+1}- E[T_{2J+1}|\widehat{T}_{1J+1}, \widehat{\sigma}_{1J+1}]|\]</span> <br></p>
+<p>leave-the-<span class="math">\(j\)</span>th-trial-out estimate of <span class="math">\(P(T_{2j}|O_{J(-j)}, \widehat{T}_{1j}, \widehat{\sigma}_{1j,k})\)</span>, where <span class="math">\(O_{J(-j)}\)</span> is all information in all <span class="math">\(\{1 \dots J\}\)</span> less the clinical outcome information in trial <span class="math">\(j\)</span>. <br></p>
+<ul>
+<li><span class="math">\(E[T_{2j}|O_{J(-j)},\widehat{T}_{1j}, \widehat{\sigma}_{1j}]\)</span>.<br /><br></li>
+</ul>
+<p>This is the same predictive distribution as given above for <span class="math">\(T_{2J+1}\)</span></p>
+</section><section class="slide level6">
+
+<h2>
+Estimation <span class="math">\(D_{J+1,k}\)</span>
+</h2>
+<p><br> <span class="math">\[\widetilde{D}_{j,k}=E[|T_{2j}|O_{2J} - E[T_{2j}|O_{J(-j)},\widehat{T}_{1j}, \widehat{\sigma}_{1j}]|]\]</span><br /><br></p>
+<ul>
+<li>where the outside expectation is taking with respect to the marginal posterior distribution of <span class="math">\(T_{2j}\)</span>. <br></li>
+</ul>
+<p><span class="math">\[\widetilde{D}_{J+1,k} \sim \widetilde{D}_{j,k}\]</span></p>
+</section><section class="slide level6">
+
+<h2>
+Evaluation
+</h2>
+<p>We considered evaluation two ways: <br> Classical<br /><br></p>
+<ul>
+<li>The CI from <span class="math">\(P(T_{2J+1}|O_{J},\widehat{T}_{1J+1}, \widehat{\sigma}_{1J+1})\)</span></li>
+<li>The model fit for the full marginal posterior</li>
+<li>For each trial <span class="math">\(j\)</span>, the CI of <span class="math">\(P(T_{2j}|O_{J},\widehat{T}_{1j}, \widehat{\sigma}_{1j})\)</span> <br></li>
+</ul>
+<p>Predictive error<br /><br></p>
+<ul>
+<li>Expected absolute prediction error, how much error to expect in your prediction</li>
+<li>Absolute prediction error <span class="math">\(D_{J+1}\)</span></li>
+</ul>
+</section><section class="slide level6">
+
+<h2>
+Absolute prediction error: Evaluation
+</h2>
+<p>Evaluation of candidate GS for usefulness will also depend on size of a clinically relevant change in the primary outcome. <br></p>
+<ul>
+<li>If the <span class="math">\(E[\tilde{D}_{J+1}]\)</span> is relatively small</li>
+<li><p>If the CI of <span class="math">\(\tilde{D}_{J+1}\)</span> are larger than the smallest clinically relevant change in the clinical outcome,</p></li>
+<li><p>If formal inference is desired <span class="math">\(\tilde{D}_{J+1}\)</span> can be compared to the null model <span class="math">\(\tilde{D}_{J+1,0}\)</span></p></li>
+</ul>
+</section><section class="slide level6">
+
+<h2>
+Comparison of candidate trial level GS
+</h2>
+<p>Smaller posterior medians, modes and means of <span class="math">\(\tilde{D}_{J+1}\)</span> with tighter posterior credible intervals (CI) indicate better candidate trial level GS. <br></p>
+<ul>
+<li>Comparison of the <span class="math">\(\tilde{D}_{J+1,k}\)</span> histograms is very useful<br /></li>
+<li>The posterior probability of <span class="math">\(E[D_{J+1,l}]&gt;E[D_{J+1,k}]\)</span> is of interest for quantifying evidence for the superiority of candidate k.
+<ul>
+<li>Either <span class="math">\(\tilde{D}_{J+1}\)</span> posterior distributions can be used as reference for the other candidate mean value<br /></li>
+<li>When Candidate <span class="math">\(l\)</span> is the null model, this is a test of any general surrogate quality</li>
+</ul></li>
+</ul>
+</section></section>
+<section><section id="generalizibility" class="titleslide slide level1"><h1>Generalizibility</h1></section><section class="slide level6">
+
+<h2>
+Generalizibility
+</h2>
+
+<p>Generalizibility is based on the setting of a new trial, not on the trial level surrogate. You need information on the setting of the <span class="math">\(J\)</span> previous trials and the <span class="math">\(J+1\)</span> trial</p>
+<ul>
+<li>Clearly one needs to determine if observed data are adequate</li>
+<li>If few characteristics are observed, generalizability should always be considered unknown</li>
+<li>This is not ‘threat’, <span class="citation" data-cites="Pearl11A">Pearl (2011)</span>,<br /></li>
+<li>Suggestion for conveying the information available to support the assumption of generalizability.</li>
+</ul>
+</section></section>
+<section><section id="conclusions" class="titleslide slide level1"><h1>Conclusions</h1></section><section class="slide level6">
+
+<h2>
+Preliminary Results
+</h2>
+<p>Between-trial estimation simulations suggest <br></p>
+<p>that the method is: <br></p>
+<ul>
+<li>Adequately unbiased<br /></li>
+<li>Noticeable difference between the <span class="math">\(D_{J+1}\)</span> estimates of good and useless trial level candidate GS<br /></li>
+<li>CI of <span class="math">\(D_{J+1}\)</span> increase and decrease as expected with the sampling and true between trial error<br /></li>
+<li>Model works for linear multivariate candidates <span class="math">\(T_{2j}|T_{1j,k}, T_{1j,q}\)</span> <br></li>
+</ul>
+<p>and that more testing is needed to: <br></p>
+<ul>
+<li>For higher order polynomials of <span class="math">\(T_{2j}|T_{1j}\)</span> and <span class="math">\(T_{2j}|T_{1j}, T_{1j,m}\)</span></li>
+<li>Sensitivity analysis for prior assumptions</li>
+</ul>
+</section><section class="slide level6">
+
+<h2>
+Summary
+</h2>
+<p>We Have:</p>
+<ul>
+<li>Provided a flexible method to predict point and interval estimates for the treatment effect on the clinical endpoint in a new trial <span class="math">\(J+1\)</span><br /></li>
+<li>Suggested an easily interpretable summary of the predictive quality outside the evaluation trials, <span class="math">\(D_{J+1}\)</span><br /></li>
+<li>Shown how <span class="math">\(D_{J+1}\)</span> can be used to compare and evaluate candidate trial level GS<br /></li>
+<li>Outlined a nomenclature for the support of generalization of an evaluated trial level GS to a new setting<br /></li>
+<li>Extended our univariate methods to allow for multivariate candidate trial level GS</li>
+</ul>
+</section><section class="slide level6">
+
+<h2>
+Summary
+</h2>
+<p>We need to:</p>
+<ul>
+<li>Start simulations for the within-trial estimation setting<br /></li>
+<li>Tailor simulations to the Rotateq data
+<ul>
+<li><span class="citation" data-cites="Dai12">Dai and Hughes (2012)</span> method</li>
+<li>GLM plus working conditional independence assumption for within trial estimation to determine performance differences</li>
+</ul></li>
+<li>Perform sensitivity analysis to prior assumptions with both types of estimation <br></li>
+</ul>
+<p>**Analyze RotaTeq data using our method to evaluate and compare candidate trial level GS</p>
+</section><section class="slide level6">
+
+<h2>
+Acknowledgments
+</h2>
+
+<p>I would like to thank my Co-authors<br /><br> <br></p>
+<p>Professor Halloran and Professor Daniels <br> <br></p>
+<p>Dr. Michael Sachs for coding help <br></p>
+<p>Merck for the opportunity to develop these methods in the context of their RotaTeq data.</p>
+</section><section class="slide level6">
+
+<h2>
+References
+</h2>
+
+
+
+
+
+
+<div class="references">
+<p>Dai, J. Y., and J. P. Hughes. 2012. “A Unified Procedure for Meta-Analytic Evaluation of Surrogate End Points in Randomized Clinical Trials.” <em>Biostatistics</em> 13 (4): 609–24.</p>
+<p>Korn, Edward L., Paul S. Albert, and Lisa M. McShane. 2005. “Assessing Surrogates as Trial Endpoints Using Mixed Models.” <em>Statistics in Medicine</em> 24 (2): 163–82.</p>
+<p>Pearl, J. 2011. “Principal Stratification — a Goal or a Tool?” <em>International Journal of Biostatistics</em> 7 (1).</p>
+<p>Tian, Lu, Tianxi Cai, Els Goetghebeur, and L. J. Wei. 2007. “Model Evaluation Based on the Sampling Distribution of Estimated Absolute Prediction Error.” <em>Biometrika</em> 94 (2): 297–311.</p>
+</div>
+</section></section>
+    </div>
+  </div>
+
+  <script src="./lib/js/head.min.js"></script>
+  <script src="./js/reveal.min.js"></script>
+
+  <script>
+
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'default',
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: []});
+    </script>
+
+  <!-- dynamically load mathjax for compatibility with --self-contained -->
+  <script>
+    (function () {
+      var script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src  = "TLGS_Merck_061014_files/mathjax-2.3.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+      document.getElementsByTagName("head")[0].appendChild(script);
+    })();
+  </script>
+
+  </body>
+</html>
