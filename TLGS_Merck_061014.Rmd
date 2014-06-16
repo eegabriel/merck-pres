@@ -1,0 +1,562 @@
+---
+title: "Comparing Biomarkers as Trial Level General <br> Surrogates"
+author: "Erin E Gabriel <br> Michael Daniels and <br>  M Elizabeth Halloran"
+date: "June 17, 2014"
+output:
+   revealjs_presentation:
+      mathjax: local
+      self_contained: false
+      pandoc_args: ["--bibliography", "bib_dissertation-1.bib"]
+      theme: sky
+      center: true
+      lib_dir: TLGS_Merck_061014_files
+      includes:
+        before_body: before.html
+---
+
+```{r, echo=FALSE}
+T1j<-rnorm(10, 2, 2)
+T2j<-rnorm(10, T1j*0.5, 1)
+T1j_hat<-rnorm(10, T1j,0.5)
+T2j_hat<-rnorm(10, T2j, 0.5)
+```
+
+
+#Background 
+
+
+---
+
+<h2>Scientific Questions of Interest</h2>
+RotaTeq has different efficacy in different regions: 
+<br> 
+
+1.) Why does efficacy differ?   
+<br>   
+2.) Can we accurately predict what the efficacy will actually be in a new setting?   
+<br>  
+3.) Do different biomarkers or combinations of biomarkers at the trial level make better surrogates of RotaTeq efficacy?   
+<br>  
+
+We are attempting to develop methods to help answer 2&3.   
+This may give us insight into question 1, but we cannot answer this question with our methods. 
+
+---
+
+<h2>Trial Level General Surrogates</h2>
+> If the trial level treatment effect on a biomarker can be used to accurately predict a trial level clinical treatment effect and this predictive association is generalizable to a setting, then the biomarker is a trial level general surrogate for that clinical outcome in that setting.  
+
+* Gives context-any setting in which accurate prediction is possible
+
+* Defines that it is at the trial level  
+
+* Correlation between the (causal) treatment effects; biomarker need not be in the causal pathway
+
+* General clinical trial setting (possible observational trial)
+
+
+#Models and Estimation 
+
+---
+
+<h2>Notation</h2>
+$J$ trials indexed by $j=\{1 \dots J\}$ have the same clinical endpoint of interest and same candidate GSs
+
+* $Z_{ij} \in \{0,1\}$ the treatment indicator for subject $i$ in trial $j$, RotaTeq.
+* $Y_{ij}$ the clinical endpoint, severe diarrhea.
+* ${A}_{ij}$ the candidate trial level GS, antibody level.  
+
+<br>
+
+* $T_{1j}$ the true treatment effect of $Z$ on the candidate trial level GS.  
+* $T_{2j}$ the true treatment effect of $Z$ on the clinical outcome Y in trial $j$    
+
+---
+
+<h2>Relationship of Interest</h2>
+The true treatment effect on the clinical outcome given the true treatment effect on the surrogate outcome.
+
+<br>
+<br>
+
+$$T_{2j}|T_{1j}$$
+
+<br>
+
+* We don't observe either of these values only estimates of them 
+* These values may differ greatly over the set of trials
+
+
+---
+
+<h2>Data collection</h2>
+
+Data can be collected at the subject level over the $J$ trials  
+<br>
+
+* $\{Z_{ij}, Y_{ij}, {A}_{ij,k}\}$ iid within trial  
+* Independent between trials but not iid    
+<br>
+
+Data can be collected at the trial level  
+<br>  
+
+* estimates of $T_{1j}$ and $T_{2j}$   
+* Published and unpublished results  
+* Requires estimates of the standard errors for these estimates 
+
+
+---
+
+<h2>Within Trial models</h2>
+
+<br> 
+<br> 
+
+$$h_1(E[A_{ij}|Z_{ij}])=\zeta_{0j} + T_{1j} Z_{ij}$$
+
+
+$$h_2(E[Y_{ij}|Z_{ij}])=\gamma_{0j} + T_{2j} Z_{ij}$$
+<br>  
+<br>
+
+where $\zeta_{0j}$ and $\gamma_{0j}$ are the trial specific intercepts  
+
+obtain $\widehat{T}_{1j} \hspace{0.5cm}\hbox{and}\hspace{0.5cm} \widehat{T}_{2j}$
+
+
+---
+
+
+
+```{r, echo=FALSE, fig.align='center'}
+par(bg = "white", mar=c(4,5,4,1))
+plot(T1j, T2j, col='red', pch=20, lwd=0.5, ylim=c(-4, 4), xlim=c(-5, 5), main='True T2j|T1j Relationship', cex=3)
+abline(a=0, b=0.5)
+```
+
+---
+
+
+
+
+```{r, echo=FALSE, fig.align='center'}
+par(mar=c(4,5,4,1), bg = "white")
+plot(T1j, T2j, col='red', pch=20, lwd=0.5, ylim=c(-4, 4), xlim=c(-5, 5), main=expression(paste('True (', T2[j],'|', T1[j], ') Relationship')), xlab=expression(paste(T1[j])),   ylab=expression(paste(T2[j])), cex=3)
+points(3, 3*0.5, col='green', pch=20)
+points(3, 3*0.5, col='green', cex=5)
+abline(a=0, b=0.5)
+```
+
+---
+
+
+
+```{r, echo=FALSE, fig.align='center'}
+par(mar=c(4,5,4,1),bg = "white")
+plot(T1j_hat,   T2j_hat, col='green', pch=20, ylim=c(-4, 4), xlim=c(-5, 5), main=expression(paste('Observed  (', hat(T2)[j],'|', hat(T1)[j], ')  Relationship')), xlab=expression(paste(hat(T1)[j])),   ylab=expression(paste(hat(T2)[j])), cex=3)
+abline(a=-2, b=1)
+```
+
+---
+
+
+
+```{r, echo=FALSE, fig.align='center'}
+par(mar=c(4,5,4,1), bg = "white")
+plot(T1j_hat,   T2j_hat, col='green', pch=20, ylim=c(-4, 4), xlim=c(-5, 5), main=expression(paste('Observed  (', hat(T2)[j],'|', hat(T1)[j], ')  Relationship')), xlab=expression(paste(hat(T1)[j])),   ylab=expression(paste(hat(T2)[j])), cex=3)
+abline(a=-2, b=1)
+points(3, -2+3, col='red', cex=10)
+points(3, -2+3, col='red', cex=5)
+points(3, -2+3, col='red', pch=20)
+```
+
+
+---
+
+
+```{r, echo=FALSE, fig.align='center'}
+par(mar=c(4,5,4,1), bg = "white")
+plot(T1j_hat,   T2j_hat, col='green', pch=20, ylim=c(-4, 4), xlim=c(-5, 5),  main=expression(paste('Observed  (', hat(T2)[j],'|', hat(T1)[j], ')  Relationship')), xlab=expression(paste(hat(T1)[j])),   ylab=expression(paste(hat(T2)[j])), cex=3)
+
+#points(T1j, T2j, col='red', pch=20)
+for(i in 1:10){
+  segments(T1j_hat[i], T2j_hat[i]-0.5, T1j_hat[i], T2j_hat[i]+0.5, col='green')
+  segments(T1j_hat[i]+0.5, T2j_hat[i], T1j_hat[i]-0.5, T2j_hat[i], col='green')
+}
+```
+
+---
+
+<h2>Within Trial Estimation</h2>
+Using an estimating equation approach the joint distribution of the estimated treatment effects can be obtained, @Dai12.  
+<br>
+
+As given in @Dai12  
+if we obtain the asymptotically linear estimates of $T_{1j}$ and $T_{2j}$, we can estimate the covariance of the estimated values within a trial $j$.
+<br>
+
+* may restrict models that can be assumed for $h_1$ and $h_2$.
+<br>
+* Full Bayesian Modeling is possible, unlikely to substantially improve evaluation at the trial level, @Korn05.
+
+
+---
+
+<h2>Individual data are not available</h2>
+Our method of candidate trial level GS evaluation and comparison can still be applied to trial level estimates,   
+provided that  
+<br>
+
+* $\widehat{T}_{1j}$  $\widehat{T}_{2j}$ for the same ${A}$ and $Y$  
+* Estimation error $\hat{\sigma}_{1j}, \hat{\sigma}_{2j}$  
+<br>
+
+
+---
+
+<h2>Between Trial: Likelihood</h2>
+If we observe or use the frequentist within trial estimation procedure to obtain $\widehat{T}_{1j}$ and $\widehat{T}_{2j}$, we assume that these estimates are consistent; such that  
+$$
+E[\widehat{T}_{1j}]\rightarrow T_{1j} 
+$$
+$$
+E[\widehat{T}_{2j}]\rightarrow T_{2j}.  
+$$
+<br>
+
+Trial specific normal likelihoods for the observed estimated treatment effects given the true treatment effects  
+$$f_{1jk}(\widehat{T}_{1j}|T_{1j},\hat{\sigma}_{1j})$$  
+$$f_{2j}(\widehat{T}_{2j}|T_{2j}, \hat{\sigma}_{2j})$$  
+
+
+---
+
+<h2>Between Trial: Working Conditional Independence</h2>
+We can assume that these estimates are conditionally independent, allowing us to derive the joint likelihood within a given trial based on these assumed models, by:  
+<br>
+
+$$f_{j}(\widehat{T}_{1j},\widehat{T}_{2j}|\hat{\sigma}_{1j,k}, \hat{\sigma}_{2j},T_{2j},T_{1j})$$  
+$$=f_{1j}(\widehat{T}_{1j}|T_{1j},\hat{\sigma}_{1j}) \times f_{2j}(\widehat{T}_{2j}|T_{2j},\hat{\sigma}_{2j})$$.  
+<br>
+
+The joint likelihood over all the trials is given by $f=\prod^{J}_{j=1}{f_{j}}$
+
+---
+
+<h2>Between Trial: Joint Likelihood</h2>
+As outlined in @Dai12, we do not have to assume conditional independence between the estimates for the trials with available data. We can instead estimate the asymptotic joint distribution of $(\widehat{T}_{1j}, \widehat{T}_{2j})$: 
+$$
+f_{jk}(\widehat{T}_{1j},\widehat{T}_{1j}|\hat{\sigma}_{1j}, \hat{\sigma}_{2j},T_{2j},T_{1j})
+\sim$$  
+$$N \left\{
+\left(\begin{array}{c}
+ T_{1j}\\
+ T_{j2}
+      \end{array} \right)
+\left(\begin{array}{cc}
+\hat{\sigma}^{2}_{1j}& \hat{\sigma}_{12j} \\
+ \hat{\sigma}_{12j}&\hat{\sigma}^{2}_{2j}
+      \end{array} \right) \right\}
+$$.
+
+This can be used as the likelihood for any trial with the required individual data. $f_k$ may be the product of any set of the conditional working independence likelihoods and the joint likelihoods.
+
+
+---
+
+<h2>Priors, $T_{1j}$</h2>
+<br>
+We assume a Dirichlet process mixture (DPM) of Gaussians for the distribution of the true treatment effect on the candidate trial level GS, $T_{1j}$. Given by: 
+<br>
+
+$$
+T_{1j} \sim N(\mu_{1j},\tau_{1j})
+$$
+
+$$
+(\mu_{1j},\tau_{1j}|G) \sim G \hspace{2cm} G \sim DP(\alpha, G_0)
+$$
+
+$$
+DP(\alpha, G_0) = \sum_{m=1}^{M} \alpha_m q(\mu_{1m}|\theta)*f(\tau_{1m}|\zeta).
+$$
+
+---
+
+<h2>Priors, $T_{2j}$</h2>
+Adaptive spline model $q(t_{2j}|T_{1j},\beta,\nu)$ 
+<br>
+
+Allows for a very flexible relationship between the true treatment effects  
+
+* $t_{2j}=m(T_{1j}, \beta) + \epsilon_j$  
+* $m(T_{1j}, \beta_k) = \beta_0 + \beta_1 T_{1j} + \beta_2 T_{1j}^{2}+$  
+* $\sum^{J}_{j=1}{b_j|T_{1j}-k_{j}|^{3}}$ 
+
+$\epsilon_j$ are i.i.d $N(0,\sigma_{\epsilon})$   and $b_j \sim N(0, \kappa^{2}_{b})$. 
+
+
+---
+
+<h2>Joint Prior</h2>
+The joint prior of $T_{2j}$, $T_{1j}$ and $\beta$ and the rest of the parameters and hyper-parameters, which we will denote as $\nu$, $\nu=\{\tau^{2}_{1k},\tau^{2}_{2},\mu_{2},\mu_{1}, \kappa^{2}_{b} ,b_m \ldots\}$, is given by:
+<br>
+<br>
+$$\pi(T_{2j},T_{1j},\beta,\nu)=$$
+$$g(T_{1j}|\mu_{1},\tau_{1})*q(t_{2j}|T_{1j},\beta,\nu)*\pi(\beta|\nu)*\pi(\nu).$$
+
+
+---
+
+<h2>Full Posterior</h2>
+We can then use the joint likelihood and the joint prior to define the joint posterior of interest.
+
+We will denote this posterior by $P_k(T_{2j},T_{1j},\beta_k, \nu| O_{J})$ for compactness, where $O_{J}$ is all observed data in all $J$ trials. 
+
+
+---
+
+<h2>Estimation</h2>
+Estimation can carried out by MCMC using a Gibbs sampling program. 
+<br>
+<br>
+
+Gibbs sampling allows for us to update the full conditional distribution for each parameter, holding the other parameters constant at their last update.
+<br>
+<br>
+
+We use JAGS for our simulations, but Winbugs and R both have boxed samplers that can be used as well. 
+*The R Gibbs did not seem to mix properly for this model...
+
+#Prediction
+
+---
+
+<h2>Predictive Posterior</h2>
+Although we do not observe $\widehat{T}_{2J+1}$ or $\hat{\sigma}_{2J+1}$, the likelihood for this information is included in the model.
+<br>
+
+* The missing data are treated like parameters  
+* Prior defined by the $f^{*}_{J+1}$ using hyper-parameters,$\tau^{2}_{1},T_{2J+1},\beta$ 
+* Observed data $\widehat{T}_{1J+1}$ and $\hat{\sigma}_{1J+1}$. 
+<br>
+
+After running the Gibbs sampler for this model, we can sample directly from the marginal posterior of $T_{2J+1}$ given the data $P(T_{2J+1}|O_{J},\widehat{T}_{1J+1}, \widehat{\sigma}_{1J+1})$, which is the desired posterior distribution.  
+
+#Evaluation and Comparison of Candidate trial level GS
+
+---
+
+<h2>Prediction Error</h2>
+Given a new trial setting
+<br>
+
+* We are interested in estimating the error we might expect to make using our predictive model
+* The absolute difference between the truth and the predicted value, $D$ 
+    + Is on the scale of the clinical outcome 
+    + Has asymptotic properties under iid data, @Tian07
+
+---
+
+<h2>Absolute prediction Error</h2> 
+
+Properties of @Tian07 absolute prediction error do not hold 
+
+* We don't observe the truth even in the evaluation trials and differences
+* We would not expect the differences to be iid
+<br>
+
+$$D_{J+1, k} = E|T_{2J+1}- E[T_{2J+1}|\widehat{T}_{1J+1}, \widehat{\sigma}_{1J+1}]|$$
+
+
+
+---
+
+<h2>Estimation $D_{J+1,k}$</h2>
+<br>
+To estimate $D_{J+1, k}$, we first obtain $D_{j,k}$ for a given observed trial $j$. 
+<br>
+
+* If we obtain estimates for $D_{j,k}$ for all $J$ trial we can estimate $D_{J+1,k}$  
+* Each trial will provide evidence of the predictive ability of the trial level GS in a new setting 
+* The average error made in the $J$ predictions over the trials gives us our best estimate of the error we are likely to make in a new trial setting outside the evaluation sets
+
+
+---
+
+<h2>Estimation $D_{j,k}$: $T_{2j}$</h2>
+
+<br>
+$$D_{J+1, k} = E|T_{2J+1}- E[T_{2J+1}|\widehat{T}_{1J+1}, \widehat{\sigma}_{1J+1}]|$$
+<br>
+
+The marginal posterior distribution of $T_{2j}$ can be calculated using all observed estimates related to the clinical outcome, i.e. $\{\widehat{T}_{2j}, \widehat{\sigma}_{2j}\}$, over all the evaluation trials alone; we will denote this as $O_{2J}$. 
+<br>
+
+$$T_{2j}|O_{2J}$$
+<br>
+
+
+
+---
+
+<h2> Estimation $D_{j,k}$: $E[T_{2j}|O_{J},\widehat{T}_{ij}, \widehat{\sigma}_{ij}]$</h2>
+<br>
+$$D_{J+1, k} = E|T_{2J+1}- E[T_{2J+1}|\widehat{T}_{1J+1}, \widehat{\sigma}_{1J+1}]|$$
+<br>
+
+leave-the-$j$th-trial-out estimate of $P(T_{2j}|O_{J(-j)}, \widehat{T}_{1j}, \widehat{\sigma}_{1j,k})$, where $O_{J(-j)}$ is all information in all $\{1 \dots J\}$ less the clinical outcome information in trial $j$. 
+<br>
+
+* $E[T_{2j}|O_{J(-j)},\widehat{T}_{1j}, \widehat{\sigma}_{1j}]$.  
+<br>
+
+This is the same predictive distribution as given above for $T_{2J+1}$
+
+
+---
+
+<h2>Estimation $D_{J+1,k}$</h2>
+<br>
+$$\widetilde{D}_{j,k}=E[|T_{2j}|O_{2J} - E[T_{2j}|O_{J(-j)},\widehat{T}_{1j}, \widehat{\sigma}_{1j}]|]$$  
+<br>
+
+* where the outside expectation is taken with respect to the marginal posterior distribution of $T_{2j}$. 
+<br>
+
+$$\widetilde{D}_{J+1,k} \sim \widetilde{D}_{j,k}$$ 
+
+
+
+---
+
+<h2>Evaluation</h2>
+We considered evaluation two ways: 
+<br>
+Classical  
+
+* The CI for $P(T_{2J+1}|O_{J},\widehat{T}_{1J+1},\widehat{\sigma}_{1J+1})$
+* The model fit for the full marginal posterior
+* For each trial $j$, the CI of $P(T_{2j}|O_{J},\widehat{T}_{1j}, \widehat{\sigma}_{1j})$
+<br>
+
+Predictive error  
+
+* Expected absolute prediction error-how much error to expect in your prediction
+* Absolute prediction error $D_{J+1}$
+ 
+
+---
+
+<h2>Absolute prediction error:  Evaluation</h2>
+Evaluation of candidate GS for usefulness will also depend on size of a clinically relevant change in the primary outcome. 
+<br>
+
+* If the $E[\tilde{D}_{J+1}]$ is relatively small,
+* If the CI of $\tilde{D}_{J+1}$ are larger than the smallest clinically relevant change in the clinical outcome,
+* If formal inference is desired $\tilde{D}_{J+1}$ can be compared to the null model $\tilde{D}_{J+1,0}$.
+
+
+---
+
+<h2>Comparison of candidate trial level GS</h2>
+Smaller posterior medians, modes and means of $\tilde{D}_{J+1}$ with tighter posterior credible intervals (CI) indicate better candidate trial level GS. 
+<br>
+
+* Comparison of the $\tilde{D}_{J+1,k}$ histograms is very useful. 
+* The posterior probability of $E[D_{J+1,l}]>E[D_{J+1,k}]$ is of interest for quantifying evidence for the superiority of candidate k,  
+    + Either of the $\tilde{D}_{J+1}$ posterior distributions can be used as reference for the other candidate mean value.
+    + When Candidate $l$ is the null model, this is a test of any general surrogate quality. 
+    
+#Generalizibility 
+
+---
+
+<h2>Generalizibility</h2>
+
+Information to support generalizibility is based on the characteristics of the new trial. 
+One needs information on the $J$ evaluation settings and the $J+1$ new setting:
+
+* Are the new setting's characteristics, represented, within the range of, or outside the range of the evaluation settings' characteristics? 
+* Is observed data adequate?
+
+We make suggestions for conveying the information available to support the assumption of generalizability. 
+
+
+#Conclusions
+
+
+---
+
+<h2>Preliminary Results</h2>
+Between-trial estimation simulations suggest 
+<br>
+
+that the method:
+<br>
+
+* Is adequately unbiased.
+* Shows a noticeable difference between the $D_{J+1}$ estimates of good and useless trial level candidate GS.
+* Indicates that the CI of $D_{J+1}$ increase and decrease as expected with the sampling and true between trial error.
+* Works for linear multivariate candidates $T_{2j}|T_{1j,k}, T_{1j,q}$.
+<br>
+
+More testing is needed to: 
+<br>
+
+* For higher order polynomials of $T_{2j}|T_{1j}$ and $T_{2j}|T_{1j}, T_{1j,m}$,
+* Sensitivity analysis for prior assumptions.
+
+
+---
+
+<h2>Summary</h2>
+We Have:
+
+* Provided a flexible method to predict point and interval estimates for the treatment effect on the clinical endpoint in a new trial $J+1$  
+* Suggested an easily interpretable summary of the predictive quality outside the evaluation trials, $D_{J+1}$    
+* Shown how $D_{J+1}$ can be used to compare and evaluate candidate trial level GS  
+* Outlined a nomenclature for the support of generalization of an evaluated trial level GS to a new setting   
+* Extended our univariate methods to allow for multivariate candidate trial level GS   
+
+
+
+---
+
+<h2>Summary</h2>
+We need to: 
+
+* Start simulations for the within-trial estimation setting  
+* Tailor simulations to the RotaTeq data
+    + @Dai12 method 
+    + GLM plus working conditional independence assumption for within trial estimation to determine performance differences
+* Perform sensitivity analysis to prior assumptions with both types of estimation
+<br>
+
+**Analyze RotaTeq data using our method to evaluate and compare candidate trial level GS 
+
+
+
+
+---
+
+<h2>Acknowledgments</h2>
+
+I would like to thank my Co-authors   
+
+Professor Halloran and Professor Daniels  
+<br>  
+
+Dr. Michael Sachs for coding help  
+<br>  
+
+Merck and all RotaTeq for the opportunity to develop these methods in the context of their RotaTeq data. 
+
+---
+
+<h2>References</h2>
+
+
+
+
