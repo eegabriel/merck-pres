@@ -9,7 +9,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <link rel="stylesheet" href="TLGS_Merck_061014_files/reveal.js-2.6.1/css/reveal.min.css"/>
+  <link rel="stylesheet" href="./css/reveal.min.css"/>
 
   <!-- some tweaks to reveal css -->
   <style type="text/css">
@@ -57,10 +57,10 @@
 
 
 
-<link rel="stylesheet" href="TLGS_Merck_061014_files/reveal.js-2.6.1/css/theme/sky.css" id="theme">
+<link rel="stylesheet" href="./css/theme/sky.css" id="theme">
 
 
-<link rel="stylesheet" media="print" href="TLGS_Merck_061014_files/reveal.js-2.6.1/css/print/pdf.css" />
+<link rel="stylesheet" media="print" href="./css/print/pdf.css" />
 
 
 </head>
@@ -281,13 +281,9 @@ DP(\alpha, G_0) = \sum_{m=1}^{M} \alpha_m q(\mu_{1m}|\theta)*f(\tau_{1m}|\zeta).
 <h2>
 Priors, <span class="math">\(T_{2j}\)</span>
 </h2>
-<p>Adaptive spline model <span class="math">\(q(t_{2j}|T_{1j},\beta,\nu)\)</span> <br></p>
-<p>Allows for a very flexible relationship between the true treatment effects</p>
-<ul>
-<li><span class="math">\(t_{2j}=m(T_{1j}, \beta) + \epsilon_j\)</span><br /></li>
-<li><span class="math">\(m(T_{1j}, \beta_k) = \beta_0 + \beta_1 T_{1j} + \beta_2 T_{1j}^{2}+\)</span><br /></li>
-<li><span class="math">\(\sum^{J}_{j=1}{b_j|T_{1j}-k_{j}|^{3}}\)</span></li>
-</ul>
+<p>Adaptive spline model <span class="math">\(q(T_{2j}|T_{1j},\beta,\nu)\)</span> <br></p>
+<p>Allows for a very flexible relationship between the true treatment effects<br /><br></p>
+<p><span class="math">\[T_{2j}=m(T_{1j}, \beta) + \epsilon_j\]</span> <span class="math">\[m(T_{1j}, \beta_k) = \beta_0 + \beta_1 T_{1j} + \beta_2 T_{1j}^{2}+\sum^{J}_{j=1}{b_j|T_{1j}-k_{j}|^{3}}\]</span> <br></p>
 <p><span class="math">\(\epsilon_j\)</span> are i.i.d <span class="math">\(N(0,\sigma_{\epsilon})\)</span> and <span class="math">\(b_j \sim N(0, \kappa^{2}_{b})\)</span>.</p>
 </section><section class="slide level6">
 
@@ -523,8 +519,8 @@ References
     </div>
   </div>
 
-  <script src="TLGS_Merck_061014_files/reveal.js-2.6.1/lib/js/head.min.js"></script>
-  <script src="TLGS_Merck_061014_files/reveal.js-2.6.1/js/reveal.min.js"></script>
+  <script src="./lib/js/head.min.js"></script>
+  <script src="./js/reveal.min.js"></script>
 
   <script>
 
